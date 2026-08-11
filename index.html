@@ -12,24 +12,25 @@
     --ink:#1d1d1f; --ink2:#6e6e73; --ink3:#a1a1a6;
     --line:rgba(0,0,0,.08); --line2:rgba(0,0,0,.045);
     --blue:#0071e3; --green:#30b653; --amber:#f0a020; --red:#e8443a;
-    --soft:#f5f5f7; --r:18px;
+    --soft:#f5f5f7; --r:16px;
     --font:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",Roboto,Helvetica,Arial,sans-serif;
   }
   #root{font-family:var(--font);color:var(--ink);background:#fff;-webkit-font-smoothing:antialiased;line-height:1.45;padding:0 0 60px;}
   #root *{box-sizing:border-box;}
   .wrap{max-width:1000px;margin:0 auto;padding:0 20px;}
   h1,h2,h3{margin:0;font-weight:600;letter-spacing:-.02em;}
-  h1{font-size:30px;} h2{font-size:19px;} h3{font-size:15px;}
+  h1{font-size:32px;letter-spacing:-.03em;} h2{font-size:20px;} h3{font-size:15.5px;}
   .sub{color:var(--ink2);font-size:13.5px;}
-  .card{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:22px;margin-bottom:16px;}
+  .card{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:24px;margin-bottom:14px;
+        box-shadow:0 1px 2px rgba(0,0,0,.03);}
   .grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));margin-bottom:16px;}
-  .stat{font-size:38px;font-weight:600;letter-spacing:-.03em;line-height:1.1;}
+  .stat{font-size:40px;font-weight:600;letter-spacing:-.03em;line-height:1.1;}
   .stat small{font-size:14px;color:var(--ink2);font-weight:400;letter-spacing:0;}
   .label{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink3);font-weight:600;margin-bottom:6px;}
   header.top{padding:44px 0 26px;border-bottom:1px solid var(--line2);margin-bottom:26px;}
   .bar{height:6px;background:var(--soft);border-radius:99px;overflow:hidden;margin-top:10px;}
   .bar>i{display:block;height:100%;background:var(--blue);border-radius:99px;transition:width .4s ease;}
-  .btn{appearance:none;border:0;background:var(--blue);color:#fff;font-family:var(--font);font-size:14px;font-weight:500;
+  .btn{appearance:none;border:0;background:var(--blue);letter-spacing:-.01em;color:#fff;font-family:var(--font);font-size:14px;font-weight:500;
        padding:10px 18px;border-radius:99px;cursor:pointer;transition:opacity .15s,transform .1s;}
   .btn:hover{opacity:.88}.btn:active{transform:scale(.97)}
   .btn.ghost{background:var(--soft);color:var(--ink);}
@@ -53,7 +54,9 @@
   .seg button[data-v="wrong"][data-on="1"]{color:var(--red);}
   .dot{width:8px;height:8px;border-radius:99px;background:var(--soft);flex:none;}
   .dot.easy{background:var(--green)}.dot.shaky{background:var(--amber)}.dot.wrong{background:var(--red)}
-  details.day{border:1px solid var(--line);border-radius:var(--r);margin-bottom:12px;overflow:hidden;background:#fff;}
+  details.day{border:1px solid var(--line);border-radius:var(--r);margin-bottom:12px;overflow:hidden;background:#fff;
+              box-shadow:0 1px 2px rgba(0,0,0,.03);transition:box-shadow .2s;}
+  details.day[open]{box-shadow:0 3px 12px rgba(0,0,0,.06);}
   details.day>summary{list-style:none;cursor:pointer;padding:16px 20px;display:flex;align-items:center;gap:14px;}
   details.day>summary::-webkit-details-marker{display:none;}
   .daynum{width:34px;height:34px;border-radius:99px;background:var(--soft);display:flex;align-items:center;justify-content:center;
@@ -78,6 +81,28 @@
   .phase:first-child{border-top:0;padding-top:0;}
   .phase .when{font-size:12.5px;color:var(--ink3);width:104px;flex:none;font-weight:500;}
   .phase.now .what b{color:var(--blue);}
+  .addrow{display:flex;gap:8px;flex-wrap:wrap;align-items:center;}
+  .addrow input[type=text]{flex:1 1 240px;width:auto;}
+  select{font-family:var(--font);font-size:14px;color:var(--ink);background:var(--soft);border:1px solid transparent;
+         border-radius:12px;padding:10px 13px;cursor:pointer;}
+  select:focus{outline:none;border-color:var(--blue);background:#fff;}
+  .del{border:0;background:transparent;color:var(--ink3);font-size:17px;line-height:1;cursor:pointer;padding:4px 6px;border-radius:8px;flex:none;}
+  .del:hover{color:var(--red);background:rgba(232,68,58,.08);}
+  .tabs{display:flex;gap:4px;background:var(--soft);border-radius:99px;padding:3px;margin:26px 0 18px;overflow-x:auto;}
+  .tabs button{border:0;background:transparent;font-family:var(--font);font-size:13.5px;font-weight:500;color:var(--ink2);
+               padding:8px 16px;border-radius:99px;cursor:pointer;white-space:nowrap;transition:.15s;}
+  .tabs button[data-on="1"]{background:#fff;color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.12);}
+  .tabs button:hover{color:var(--ink);}
+  .phasecard{border:1px solid var(--line);border-radius:var(--r);padding:20px;margin-bottom:12px;background:#fff;}
+  .phasecard.now{border-color:var(--blue);box-shadow:0 0 0 3px rgba(0,113,227,.08);}
+  .phasecard .tag{font-size:11px;font-weight:600;padding:3px 9px;border-radius:99px;background:var(--soft);color:var(--ink2);}
+  .phasecard.now .tag{background:var(--blue);color:#fff;}
+  .heat{display:flex;gap:3px;flex-wrap:wrap;margin-top:10px;}
+  .heat i{width:13px;height:13px;border-radius:3px;background:var(--soft);display:block;}
+  .heat i.a1{background:#cfe6ff}.heat i.a2{background:#8cc4ff}.heat i.a3{background:#3d9bff}.heat i.a4{background:#0062c4}
+  .hist{font-size:13px;color:var(--ink2);padding:8px 0;border-top:1px solid var(--line2);display:flex;gap:10px;}
+  .hist:first-child{border-top:0}
+  .hist b{color:var(--ink);font-weight:600;min-width:74px}
   .savehint{font-size:12px;color:var(--ink3);text-align:center;margin-top:22px;}
   .flexbtw{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;}
   .legend{display:flex;gap:18px;flex-wrap:wrap;font-size:12.5px;color:var(--ink2);margin-top:14px;}
@@ -154,7 +179,10 @@
     </div>
   </div>
 
-  <h2 style="margin:30px 0 4px">Woche 1 · Einmal durch alles</h2>
+  <div class="tabs" id="tabs"></div>
+
+  <div id="view-plan">
+  <h2 style="margin:4px 0 4px" id="plantitle">Woche 1 · Einmal durch alles</h2>
   <div class="sub">Reihenfolge nach Abhängigkeiten: erst Kosten und Gewinn, dann Marktmacht. Rechnen zuerst, nachlesen nur wenn es klemmt.</div>
   <div class="legend">
     <span><i class="badge uni">Uni-Übung</i> Übungsaufgabe aus der Vorlesung – die Hauptarbeit</span>
@@ -163,11 +191,34 @@
   </div>
   <div id="days" style="margin-top:16px"></div>
 
-  <h2 style="margin:30px 0 4px">Die vier Phasen</h2>
-  <div class="sub" style="margin-bottom:16px">Der aktuelle Abschnitt ist hervorgehoben.</div>
-  <div class="card" id="phases"></div>
+  </div>
 
-  <h2 style="margin:30px 0 4px">Wo es hängt</h2>
+  <div id="view-phasen" hidden>
+    <h2 style="margin:4px 0 4px">Alle vier Phasen</h2>
+    <div class="sub" style="margin-bottom:16px">Jede Phase ist jederzeit offen – du kannst vorziehen, was du brauchst.</div>
+    <div id="phases"></div>
+  </div>
+
+  <div id="view-archiv" hidden>
+    <h2 style="margin:4px 0 4px">Alles auf einen Blick</h2>
+    <div class="sub" style="margin-bottom:16px">Jede Aufgabe aus allen sieben Tagen, jederzeit erreichbar – sortiert nach Status.</div>
+    <div class="card" id="archive"></div>
+    <h3 style="margin:24px 0 10px">Verlauf</h3>
+    <div class="card" id="history"></div>
+    <h3 style="margin:24px 0 10px">Sicherung</h3>
+    <div class="card">
+      <div class="mini" style="margin-bottom:12px">Der Fortschritt liegt nur in diesem Browser. Einmal pro Woche sichern kostet zehn Sekunden und rettet dich, falls der Verlauf gelöscht wird.</div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn" id="expbtn">Sicherung herunterladen</button>
+        <button class="btn ghost" id="impbtn">Sicherung einlesen</button>
+        <input type="file" id="impfile" accept="application/json" style="display:none">
+      </div>
+      <div class="mini" id="backupmsg" style="margin-top:10px"></div>
+    </div>
+  </div>
+
+  <div id="view-klausuren" hidden>
+  <h2 style="margin:4px 0 4px">Wo es hängt</h2>
   <div class="sub" style="margin-bottom:16px">Ein Satz reicht. Was hier steht, arbeiten wir gezielt auf.</div>
   <div class="card">
     <textarea id="notes" rows="5" placeholder="z. B. „Gemischte Strategien: weiß nie, wessen Auszahlungen ich gleichsetzen muss.“"></textarea>
@@ -177,6 +228,34 @@
   <h2 style="margin:30px 0 4px">Simulationsklausuren</h2>
   <div class="sub" style="margin-bottom:16px">60 Minuten, Handy weg, nur Taschenrechner. 30 von 60 Punkten sind bestanden.</div>
   <div class="card" id="mocks"></div>
+  <div class="card">
+    <div class="label">Klausur hinzufügen</div>
+    <div class="addrow">
+      <input type="text" id="newmock" placeholder="z. B. Simulation 3 oder Altklausur WS 2024">
+      <button class="btn" id="addmock">Hinzufügen</button>
+    </div>
+  </div>
+
+  <h2 style="margin:34px 0 4px">Eigene Übungsaufgaben</h2>
+  <div class="sub" style="margin-bottom:16px">Alles, was du dir zusätzlich erstellen lässt. Wird genauso bewertet und landet in der Wiederholungsliste.</div>
+  <div class="card" id="own"></div>
+  <div class="card">
+    <div class="label">Aufgabe hinzufügen</div>
+    <div class="addrow">
+      <input type="text" id="newown" placeholder="z. B. Cournot mit drei Firmen">
+      <select id="newowntopic">
+        <option value="Kosten & Gewinn">Kosten & Gewinn</option>
+        <option value="Monopol & Wohlfahrt">Monopol & Wohlfahrt</option>
+        <option value="Spieltheorie">Spieltheorie</option>
+        <option value="Oligopol">Oligopol</option>
+        <option value="Unsicherheit & Information">Unsicherheit & Information</option>
+        <option value="Konsumententheorie">Konsumententheorie</option>
+        <option value="Sonstiges">Sonstiges</option>
+      </select>
+      <button class="btn" id="addown">Hinzufügen</button>
+    </div>
+  </div>
+  </div>
 
   <div class="savehint" id="savehint">Alles wird automatisch gespeichert.</div>
 </div>
@@ -327,11 +406,16 @@
   });
 
   const PHASES=[
-   {from:'2026-08-11',to:'2026-08-17',t:'Einmal durch alles',d:'Jedes Thema einmal berührt. Ziel ist nicht Können, sondern zu wissen, wo es klemmt.'},
-   {from:'2026-08-18',to:'2026-08-26',t:'Lücken schließen',d:'Nur noch gelb und rot. Alte Aufgaben ein zweites Mal, ohne Lösung daneben.'},
-   {from:'2026-08-27',to:'2026-09-07',t:'Klausuren unter Zeit',d:'Zwei bis drei Simulationen pro Woche, je 60 Minuten am Stück, danach sauber nacharbeiten.'},
-   {from:'2026-09-08',to:'2026-09-13',t:'Feinschliff',d:'Nur noch die eigene Fehlerliste und eine letzte Klausur. Nichts Neues mehr anfangen.'},
-   {from:'2026-09-14',to:'2026-09-14',t:'Klausur',d:'60 Minuten, 60 Punkte. Lösungen sofort in die Tabelle übertragen.'}
+   {from:'2026-08-11',to:'2026-08-17',t:'Einmal durch alles',d:'Jedes Thema einmal berührt. Ziel ist nicht Können, sondern zu wissen, wo es klemmt.',
+    how:['Pro Thema: Lösung anschauen, zuklappen, selbst rechnen.','Bewertet wird nur, was du ohne Lösung gerechnet hast.','Viel Gelb und Rot ist in dieser Woche normal.']},
+   {from:'2026-08-18',to:'2026-08-26',t:'Lücken schließen',d:'Nur noch gelb und rot. Alte Aufgaben ein zweites Mal, ohne Lösung daneben.',
+    how:['Starte jeden Tag mit der Wiederholungsliste.','Neue Aufgaben nur zu Themen, die noch wackeln.','Ziel bis zum 26.: kein rotes Thema mehr.']},
+   {from:'2026-08-27',to:'2026-09-07',t:'Klausuren unter Zeit',d:'Zwei bis drei Simulationen pro Woche, je 60 Minuten am Stück, danach sauber nacharbeiten.',
+    how:['Handy weg, Wecker auf 60 Minuten, nur Taschenrechner.','Lösungen sofort in die Tabelle übertragen – das ist Teil der Übung.','Nacharbeiten dauert länger als die Klausur selbst. Einplanen.']},
+   {from:'2026-09-08',to:'2026-09-13',t:'Feinschliff',d:'Nur noch die eigene Fehlerliste und eine letzte Klausur. Nichts Neues mehr anfangen.',
+    how:['Nur noch Themen aus deinen Notizen unten.','Eine letzte Generalprobe, spätestens am 12.','Am 13. nichts Neues mehr – höchstens einmal überfliegen.']},
+   {from:'2026-09-14',to:'2026-09-14',t:'Klausur',d:'60 Minuten, 60 Punkte. Lösungen sofort in die Tabelle übertragen.',
+    how:['Eine Minute pro Punkt. Bei Fill-in also 5 Minuten je Teilaufgabe.','Erst alles rechnen, was schnell geht – Freitext zuletzt.','Nur die Tabelle wird bewertet. Nichts vergessen zu übertragen.']}
   ];
 
   const MOCKS=[{id:'m1',n:'Altklausur HPZ SS 2025'},{id:'m2',n:'Altklausur FPZ SS 2025'},
@@ -339,15 +423,16 @@
                {id:'m5',n:'Generalprobe'}];
 
   const LABEL={easy:'sitzt',shaky:'wackelig',wrong:'falsch'};
-  const SRCLABEL={uni:'Uni-Übung',alt:'Altklausur',ki:'Extra'};
+  const SRCLABEL={uni:'Uni-Übung',alt:'Altklausur',ki:'Extra',own:'Eigene'};
   const NEXT_DUE={easy:7,shaky:1,wrong:1};
 
-  let S={tasks:{},sessions:[],notes:'',mocks:{}};
+  let S={tasks:{},sessions:[],notes:'',mocks:{},ownTasks:[],ownMocks:[]};
   let elapsed=0,ticking=null;
 
   const today=()=>new Date().toISOString().slice(0,10);
   const addDays=(iso,n)=>{const d=new Date(iso);d.setDate(d.getDate()+n);return d.toISOString().slice(0,10);};
-  const allTasks=()=>PLAN.flatMap(p=>p.tasks.map(t=>Object.assign({day:p.d,chap:p.chap},t)));
+  const allTasks=()=>PLAN.flatMap(p=>p.tasks.map(t=>Object.assign({day:p.d,chap:p.chap},t)))
+        .concat((S.ownTasks||[]).map(o=>({t:o.t,r:o.r,s:'own',day:'–',chap:o.topic})));
 
   function load(){
     try{const v=localStorage.getItem(KEY); if(v) S=Object.assign(S,JSON.parse(v));}catch(e){}
@@ -457,14 +542,37 @@
 
     const t0=today();
     document.getElementById('phases').innerHTML=PHASES.map(p=>{
-      const now=t0>=p.from&&t0<=p.to;
+      const now=t0>=p.from&&t0<=p.to, past=t0>p.to;
       const f=p.from.slice(8)+'.'+p.from.slice(5,7)+'.',to=p.to.slice(8)+'.'+p.to.slice(5,7)+'.';
-      return '<div class="phase'+(now?' now':'')+'"><div class="when">'+(p.from===p.to?f:f+' – '+to)+'</div>'+
-             '<div class="what"><b>'+p.t+'</b><div class="mini">'+p.d+'</div></div></div>';
+      return '<div class="phasecard'+(now?' now':'')+'">'+
+        '<div class="flexbtw" style="margin-bottom:8px"><h3>'+p.t+'</h3>'+
+        '<span class="tag">'+(now?'jetzt':past?'vorbei':(p.from===p.to?f:f+' – '+to))+'</span></div>'+
+        '<div class="mini" style="margin-bottom:10px">'+p.d+'</div>'+
+        '<div class="mini">'+p.how.map(h=>'· '+h).join('<br>')+'</div></div>';
     }).join('');
 
+    // Archiv: alle Aufgaben nach Status
+    const groups={wrong:[],shaky:[],easy:[],open:[]};
+    all.forEach(x=>{const s=S.tasks[x.r];groups[s?s.status:'open'].push(x);});
+    const GN={wrong:'Zuletzt falsch',shaky:'Noch wackelig',easy:'Sitzt sicher',open:'Noch nicht angefasst'};
+    document.getElementById('archive').innerHTML=['wrong','shaky','easy','open'].map(g=>{
+      if(!groups[g].length) return '';
+      return '<div class="grouphead">'+GN[g]+' · '+groups[g].length+'</div>'+
+        groups[g].map(x=>'<div class="hist"><b>Tag '+x.day+'</b><span>'+x.t+' <span class="mini">· '+x.r+'</span></span></div>').join('');
+    }).join('')||'<div class="empty">Noch nichts bewertet.</div>';
+
+    // Verlauf
+    const hdays=Object.keys(byDay).sort().reverse();
+    document.getElementById('history').innerHTML = hdays.length
+      ? hdays.map(dt=>{
+          const n=all.filter(x=>S.tasks[x.r]&&S.tasks[x.r].date===dt).length;
+          const de=dt.slice(8)+'.'+dt.slice(5,7)+'.';
+          return '<div class="hist"><b>'+de+'</b><span>'+byDay[dt]+' Minuten'+(n?' · '+n+' Aufgaben bewertet':'')+'</span></div>';
+        }).join('')
+      : '<div class="empty">Noch keine Zeit gebucht.</div>';
+
     const mc=document.getElementById('mocks');mc.innerHTML='';
-    MOCKS.forEach(m=>{
+    MOCKS.concat(S.ownMocks||[]).forEach(m=>{
       const v=S.mocks[m.id]||{};
       const row=document.createElement('div');row.className='task';
       row.innerHTML='<span class="dot '+(v.pts>=30?'easy':(v.pts!=null&&v.pts!==''?'wrong':''))+'"></span>'+
@@ -474,11 +582,71 @@
       const [di,pi]=row.querySelectorAll('input');
       const upd=()=>{S.mocks[m.id]={date:di.value,pts:pi.value===''?null:Number(pi.value)};save();};
       di.onchange=upd;pi.onchange=()=>{upd();render();};
+      if(m.custom){
+        const x=document.createElement('button');x.className='del';x.innerHTML='&times;';
+        x.title='Entfernen';
+        x.onclick=()=>{ S.ownMocks=S.ownMocks.filter(o=>o.id!==m.id); delete S.mocks[m.id]; save(); render(); };
+        row.appendChild(x);
+      }
       mc.appendChild(row);
     });
 
+    // Eigene Übungsaufgaben
+    const ow=document.getElementById('own'); ow.innerHTML='';
+    if(!(S.ownTasks||[]).length){
+      ow.innerHTML='<div class="empty">Noch keine eigenen Aufgaben. Trag unten ein, was du dir zusätzlich erstellen lässt.</div>';
+    } else {
+      const byTopic={};
+      S.ownTasks.forEach(o=>{(byTopic[o.topic]=byTopic[o.topic]||[]).push(o);});
+      Object.keys(byTopic).forEach(tp=>{
+        const h=document.createElement('div');h.className='grouphead';h.textContent=tp;ow.appendChild(h);
+        byTopic[tp].forEach(o=>{
+          const st=S.tasks[o.r];
+          const row=document.createElement('div');row.className='task';
+          row.innerHTML='<span class="dot '+(st?st.status:'')+'"></span>'+
+            '<span class="name">'+o.t+'</span>'+
+            '<span class="seg">'+['easy','shaky','wrong'].map(v=>
+              '<button data-v="'+v+'" data-on="'+(st&&st.status===v?1:0)+'">'+LABEL[v]+'</button>').join('')+'</span>';
+          row.querySelectorAll('.seg button').forEach(b=>b.onclick=()=>setStatus(o.r,b.dataset.v));
+          const x=document.createElement('button');x.className='del';x.innerHTML='&times;';x.title='Entfernen';
+          x.onclick=()=>{ S.ownTasks=S.ownTasks.filter(z=>z.r!==o.r); delete S.tasks[o.r]; save(); render(); };
+          row.appendChild(x);
+          ow.appendChild(row);
+        });
+      });
+    }
+
     document.getElementById('notes').value=S.notes||'';
   }
+
+  const VIEWS=[['plan','Woche 1'],['phasen','Alle Phasen'],['klausuren','Klausuren & Notizen'],['archiv','Archiv']];
+  function showView(v){
+    VIEWS.forEach(x=>{const el=document.getElementById('view-'+x[0]); if(el) el.hidden = x[0]!==v;});
+    document.querySelectorAll('#tabs button').forEach(b=>b.dataset.on = b.dataset.v===v?'1':'0');
+    S.view=v; save();
+  }
+  document.getElementById('tabs').innerHTML=VIEWS.map(x=>
+    '<button data-v="'+x[0]+'" data-on="'+(x[0]==='plan'?1:0)+'">'+x[1]+'</button>').join('');
+  document.querySelectorAll('#tabs button').forEach(b=>b.onclick=()=>showView(b.dataset.v));
+
+  // Sicherung
+  document.getElementById('expbtn').onclick=()=>{
+    const blob=new Blob([JSON.stringify(S,null,2)],{type:'application/json'});
+    const a=document.createElement('a');
+    a.href=URL.createObjectURL(blob);
+    a.download='mikro-fortschritt-'+today()+'.json';
+    a.click();
+    document.getElementById('backupmsg').textContent='Datei gespeichert. Leg sie irgendwo ab, wo du sie wiederfindest.';
+  };
+  document.getElementById('impbtn').onclick=()=>document.getElementById('impfile').click();
+  document.getElementById('impfile').onchange=function(){
+    const f=this.files[0]; if(!f) return;
+    const rd=new FileReader();
+    rd.onload=()=>{ try{ S=Object.assign(S,JSON.parse(rd.result)); save(); render();
+        document.getElementById('backupmsg').textContent='Fortschritt wiederhergestellt.';
+      }catch(e){ document.getElementById('backupmsg').textContent='Die Datei liess sich nicht lesen.'; } };
+    rd.readAsText(f);
+  };
 
   const fmt=s=>String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');
   document.getElementById('startstop').onclick=function(){
@@ -509,10 +677,28 @@
       ?'Mischsatz quer durch die Themen: '+pick.map(p=>p.t+' ('+p.r+')').join(' · ')
       :'Alles sitzt. Dann eine ganze Klausur unter 60 Minuten.';
   };
+  document.getElementById('addmock').onclick=()=>{
+    const el=document.getElementById('newmock'), n=el.value.trim();
+    if(!n) return;
+    S.ownMocks=S.ownMocks||[];
+    S.ownMocks.push({id:'own-m-'+Date.now(), n:n, custom:true});
+    el.value=''; save(); render();
+  };
+  document.getElementById('newmock').onkeydown=e=>{if(e.key==='Enter')document.getElementById('addmock').click();};
+
+  document.getElementById('addown').onclick=()=>{
+    const el=document.getElementById('newown'), n=el.value.trim();
+    if(!n) return;
+    S.ownTasks=S.ownTasks||[];
+    S.ownTasks.push({r:'own-t-'+Date.now(), t:n, topic:document.getElementById('newowntopic').value});
+    el.value=''; save(); render();
+  };
+  document.getElementById('newown').onkeydown=e=>{if(e.key==='Enter')document.getElementById('addown').click();};
+
   const notes=document.getElementById('notes');
   notes.oninput=()=>{S.notes=notes.value;save();document.getElementById('notesaved').textContent='Notiz gespeichert.';};
 
-  try{ load(); }catch(e){
+  try{ load(); if(S.view) showView(S.view); }catch(e){
     document.getElementById('savehint').textContent='Fehler beim Laden: '+e.message;
     console.error(e);
   }
