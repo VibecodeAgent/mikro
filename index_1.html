@@ -1,0 +1,509 @@
+<div id="root">
+<style>
+  :root{
+    --ink:#1d1d1f; --ink2:#6e6e73; --ink3:#a1a1a6;
+    --line:rgba(0,0,0,.08); --line2:rgba(0,0,0,.045);
+    --blue:#0071e3; --green:#30b653; --amber:#f0a020; --red:#e8443a;
+    --soft:#f5f5f7; --r:18px;
+    --font:-apple-system,BlinkMacSystemFont,"SF Pro Display","Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+  }
+  #root{font-family:var(--font);color:var(--ink);background:#fff;-webkit-font-smoothing:antialiased;line-height:1.45;padding:0 0 60px;}
+  #root *{box-sizing:border-box;}
+  .wrap{max-width:1000px;margin:0 auto;padding:0 20px;}
+  h1,h2,h3{margin:0;font-weight:600;letter-spacing:-.02em;}
+  h1{font-size:30px;} h2{font-size:19px;} h3{font-size:15px;}
+  .sub{color:var(--ink2);font-size:13.5px;}
+  .card{background:#fff;border:1px solid var(--line);border-radius:var(--r);padding:22px;margin-bottom:16px;}
+  .grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(190px,1fr));margin-bottom:16px;}
+  .stat{font-size:38px;font-weight:600;letter-spacing:-.03em;line-height:1.1;}
+  .stat small{font-size:14px;color:var(--ink2);font-weight:400;letter-spacing:0;}
+  .label{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink3);font-weight:600;margin-bottom:6px;}
+  header.top{padding:44px 0 26px;border-bottom:1px solid var(--line2);margin-bottom:26px;}
+  .bar{height:6px;background:var(--soft);border-radius:99px;overflow:hidden;margin-top:10px;}
+  .bar>i{display:block;height:100%;background:var(--blue);border-radius:99px;transition:width .4s ease;}
+  .btn{appearance:none;border:0;background:var(--blue);color:#fff;font-family:var(--font);font-size:14px;font-weight:500;
+       padding:10px 18px;border-radius:99px;cursor:pointer;transition:opacity .15s,transform .1s;}
+  .btn:hover{opacity:.88}.btn:active{transform:scale(.97)}
+  .btn.ghost{background:var(--soft);color:var(--ink);}
+  .btn:focus-visible,.chip:focus-visible,.seg button:focus-visible{outline:2px solid var(--blue);outline-offset:2px;}
+  .task{display:flex;align-items:center;gap:12px;padding:10px 0;border-top:1px solid var(--line2);}
+  .task:first-of-type{border-top:0;}
+  .task .name{flex:1;font-size:14.5px;min-width:0;}
+  .task .name .ref{color:var(--ink3);font-size:12.5px;}
+  .badge{display:inline-block;font-size:11px;font-weight:600;letter-spacing:.02em;padding:3px 9px;border-radius:99px;
+         background:var(--soft);color:var(--ink2);flex:none;}
+  .badge.uni{background:rgba(0,113,227,.10);color:#0062c4;}
+  .badge.alt{background:rgba(48,182,83,.12);color:#1f7d38;}
+  .badge.ki{background:rgba(0,0,0,.05);color:var(--ink2);}
+  .seg{display:flex;background:var(--soft);border-radius:99px;padding:2px;gap:2px;flex:none;}
+  .seg button{border:0;background:transparent;font-family:var(--font);font-size:12.5px;font-weight:500;color:var(--ink2);
+              padding:5px 11px;border-radius:99px;cursor:pointer;transition:.15s;}
+  .seg button:hover{color:var(--ink);}
+  .seg button[data-on="1"]{background:#fff;box-shadow:0 1px 3px rgba(0,0,0,.12);}
+  .seg button[data-v="easy"][data-on="1"]{color:var(--green);}
+  .seg button[data-v="shaky"][data-on="1"]{color:var(--amber);}
+  .seg button[data-v="wrong"][data-on="1"]{color:var(--red);}
+  .dot{width:8px;height:8px;border-radius:99px;background:var(--soft);flex:none;}
+  .dot.easy{background:var(--green)}.dot.shaky{background:var(--amber)}.dot.wrong{background:var(--red)}
+  details.day{border:1px solid var(--line);border-radius:var(--r);margin-bottom:12px;overflow:hidden;background:#fff;}
+  details.day>summary{list-style:none;cursor:pointer;padding:16px 20px;display:flex;align-items:center;gap:14px;}
+  details.day>summary::-webkit-details-marker{display:none;}
+  .daynum{width:34px;height:34px;border-radius:99px;background:var(--soft);display:flex;align-items:center;justify-content:center;
+          font-size:13px;font-weight:600;color:var(--ink2);flex:none;}
+  .daynum.done{background:var(--green);color:#fff;}
+  .daybody{padding:4px 20px 18px;}
+  .mini{font-size:12.5px;color:var(--ink2);}
+  .grouphead{font-size:12px;font-weight:600;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em;margin:16px 0 2px;}
+  .queue{display:flex;flex-direction:column;gap:8px;}
+  .chip{display:flex;align-items:center;gap:10px;background:var(--soft);border:1px solid transparent;border-radius:12px;
+        padding:10px 14px;font-size:13.5px;cursor:pointer;font-family:var(--font);color:var(--ink);text-align:left;width:100%;}
+  .chip:hover{border-color:var(--line);}
+  .chip .st{margin-left:auto;font-size:12px;color:var(--ink2);}
+  .chip.wrong{background:rgba(232,68,58,.08);}
+  .chip.shaky{background:rgba(240,160,32,.10);}
+  input[type=text],textarea,input[type=number]{font-family:var(--font);font-size:14px;color:var(--ink);background:var(--soft);
+        border:1px solid transparent;border-radius:12px;padding:10px 13px;width:100%;resize:vertical;}
+  input:focus,textarea:focus{outline:none;border-color:var(--blue);background:#fff;}
+  .timer{font-variant-numeric:tabular-nums;font-size:44px;font-weight:600;letter-spacing:-.03em;}
+  .empty{color:var(--ink3);font-size:13.5px;padding:6px 0;}
+  .phase{display:flex;gap:12px;align-items:flex-start;padding:14px 0;border-top:1px solid var(--line2);}
+  .phase:first-child{border-top:0;padding-top:0;}
+  .phase .when{font-size:12.5px;color:var(--ink3);width:104px;flex:none;font-weight:500;}
+  .phase.now .what b{color:var(--blue);}
+  .savehint{font-size:12px;color:var(--ink3);text-align:center;margin-top:22px;}
+  .flexbtw{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;}
+  .legend{display:flex;gap:18px;flex-wrap:wrap;font-size:12.5px;color:var(--ink2);margin-top:14px;}
+  .legend span{display:flex;align-items:center;gap:7px;}
+  @media (max-width:640px){
+    h1{font-size:25px}.stat{font-size:32px}.card{padding:18px}.wrap{padding:0 14px}
+    .task{flex-wrap:wrap}.task .name{flex:1 1 100%;order:1}.seg{order:3;margin-left:auto}
+  }
+  @media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div class="label">Grundlagen der Mikroökonomie · Prof. Weinschenk</div>
+    <h1>Klausur am 14. September</h1>
+    <div class="sub" id="headsub">Dritter Anlauf. Diesmal über Aufgaben statt über Folien.</div>
+  </header>
+
+  <div class="grid">
+    <div class="card">
+      <div class="label">Verbleibend</div>
+      <div class="stat" id="daysleft">–</div>
+      <div class="mini" id="daysdetail"></div>
+    </div>
+    <div class="card">
+      <div class="label">Sitzt sicher</div>
+      <div class="stat" id="masterycount">–</div>
+      <div class="bar"><i id="masterybar" style="width:0%"></i></div>
+    </div>
+    <div class="card">
+      <div class="label">Serie</div>
+      <div class="stat" id="streak">0<small> Tage</small></div>
+      <div class="mini" id="todaymin">Heute noch nichts gerechnet</div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="flexbtw">
+      <div style="min-width:240px">
+        <div class="label">Jetzt dran</div>
+        <h2 id="nowtitle">Wird geladen …</h2>
+        <div class="sub" id="nowsub"></div>
+      </div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn" id="onetask">Eine Aufgabe starten</button>
+        <button class="btn ghost" id="mixbtn">Mischsatz aus 5 Themen</button>
+      </div>
+    </div>
+    <div class="mini" id="hint" style="margin-top:14px"></div>
+  </div>
+
+  <div class="card">
+    <div class="flexbtw" style="margin-bottom:12px">
+      <div>
+        <div class="label">Wiederholung fällig</div>
+        <div class="sub">Alles, was wackelig oder falsch war. Erst wenn das leer ist, ist der Tag fertig.</div>
+      </div>
+      <div class="mini" id="quecount"></div>
+    </div>
+    <div class="queue" id="queue"></div>
+  </div>
+
+  <div class="card">
+    <div class="flexbtw">
+      <div>
+        <div class="label">Stoppuhr</div>
+        <div class="timer" id="clock">00:00</div>
+        <div class="mini" id="sessionhint">Mitlaufen lassen – so siehst du, wie die Rechenzeiten sinken.</div>
+      </div>
+      <div style="display:flex;gap:8px;align-items:center">
+        <button class="btn" id="startstop">Start</button>
+        <button class="btn ghost" id="logbtn">Zeit buchen</button>
+      </div>
+    </div>
+  </div>
+
+  <h2 style="margin:30px 0 4px">Woche 1 · Einmal durch alles</h2>
+  <div class="sub">Reihenfolge nach Abhängigkeiten: erst Kosten und Gewinn, dann Marktmacht. Rechnen zuerst, nachlesen nur wenn es klemmt.</div>
+  <div class="legend">
+    <span><i class="badge uni">Uni-Übung</i> Übungsaufgabe aus der Vorlesung – die Hauptarbeit</span>
+    <span><i class="badge ki">Extra</i> Zusatzaufgaben aus deinem Pool, falls ein Thema noch wackelt</span>
+    <span class="mini">Die Altklausuren schreibst du komplett unter Zeit – unten bei den Simulationsklausuren.</span>
+  </div>
+  <div id="days" style="margin-top:16px"></div>
+
+  <h2 style="margin:30px 0 4px">Die vier Phasen</h2>
+  <div class="sub" style="margin-bottom:16px">Der aktuelle Abschnitt ist hervorgehoben.</div>
+  <div class="card" id="phases"></div>
+
+  <h2 style="margin:30px 0 4px">Wo es hängt</h2>
+  <div class="sub" style="margin-bottom:16px">Ein Satz reicht. Was hier steht, arbeiten wir gezielt auf.</div>
+  <div class="card">
+    <textarea id="notes" rows="5" placeholder="z. B. „Gemischte Strategien: weiß nie, wessen Auszahlungen ich gleichsetzen muss.“"></textarea>
+    <div class="mini" id="notesaved" style="margin-top:8px">&nbsp;</div>
+  </div>
+
+  <h2 style="margin:30px 0 4px">Simulationsklausuren</h2>
+  <div class="sub" style="margin-bottom:16px">60 Minuten, Handy weg, nur Taschenrechner. 30 von 60 Punkten sind bestanden.</div>
+  <div class="card" id="mocks"></div>
+
+  <div class="savehint" id="savehint">Alles wird automatisch gespeichert.</div>
+</div>
+</div>
+
+<script>
+(function(){
+  const KEY='mikro-tracker-v2';
+  const EXAM=new Date(2026,8,14);
+
+  // s: 'uni' = Übungsaufgabe der Vorlesung, 'alt' = Altklausur, 'ki' = Zusatzaufgabe aus dem Pool
+  const PLAN=[
+   {d:1,title:'Kosten, Produktion und Gewinn',chap:'Kapitel 7 + 8',
+    why:'Das Fundament der Firmenseite. Kam in beiden Altklausuren vor und wird für Monopol und Oligopol gebraucht.',
+    tasks:[
+     {t:'Minimale Durchschnittskosten bestimmen',s:'ki',r:'Pool D1'},
+     {t:'Minimale Durchschnittskosten, zweite Kostenfunktion',s:'ki',r:'Pool D2'},
+     {t:'Durchschnittskosten mit variablem Anteil',s:'ki',r:'Pool D3'},
+     {t:'Preis am Marktaustrittspunkt',s:'ki',r:'Pool D4'},
+     {t:'Optimaler Input bei gegebenem Lohnsatz',s:'ki',r:'Pool D5'},
+     {t:'Optimaler Input, zweite Produktionsfunktion',s:'ki',r:'Pool D6'},
+     {t:'Optimaler Input bei Wurzelfunktion',s:'ki',r:'Pool D7'},
+     {t:'Gewinnänderung bei steigendem Outputpreis',s:'ki',r:'Pool D8'},
+     {t:'Gewinnänderung bei steigendem Inputpreis',s:'ki',r:'Pool D9'},
+     {t:'Kostenminimierung bei Cobb-Douglas',s:'uni',r:'Übung 7.1'},
+     {t:'Kurzfristige Kostenminimierung',s:'uni',r:'Übung 7.2'},
+     {t:'Wirkung von Inputpreisänderungen',s:'uni',r:'Übung 7.3'},
+     {t:'Kostenfunktionen analysieren',s:'uni',r:'Übung 7.4'},
+     {t:'Gewinnmaximierung',s:'uni',r:'Übung 8.1'},
+     {t:'Kurz- und langfristiges Angebot',s:'uni',r:'Übung 8.2'},
+     {t:'Wert einer Prozessverbesserung',s:'uni',r:'Übung 8.3'},
+     {t:'Produzieren trotz Verlusten?',s:'uni',r:'Übung 8.6'},
+     {t:'Kurzfristige Inputnachfrage',s:'uni',r:'Übung 8.7'},
+     {t:'Minimale Durchschnittskosten',s:'alt',r:'HPZ 2b'},
+     {t:'Durchschnittliche variable Kosten',s:'alt',r:'FPZ 2b'},
+     {t:'Inputnachfrage bei fixem Input 1',s:'alt',r:'FPZ 2c'}]},
+
+   {d:2,title:'Monopol und Wohlfahrt',chap:'Kapitel 12 + 10',
+    why:'Erste Anwendung von Grenzerlös = Grenzkosten, aber nur mit einer Firma. Danach ist Oligopol halb geschenkt.',
+    tasks:[
+     {t:'Monopolpreis und -menge',s:'uni',r:'Übung 12.1'},
+     {t:'Regulierung eines Monopols',s:'uni',r:'Übung 12.2'},
+     {t:'Prozessverbesserung im Monopol',s:'uni',r:'Übung 12.3'},
+     {t:'Preisdiskriminierung 3. Grades',s:'uni',r:'Übung 12.4'},
+     {t:'Wohlfahrtseffekte einer Preisregulierung',s:'uni',r:'Übung 10.1'},
+     {t:'Pareto-optimale Handelspläne',s:'uni',r:'Übung 10.2'},
+     {t:'Eistee-Strandbar: Preise für zwei Gruppen',s:'alt',r:'FPZ 3a'},
+     {t:'Konsumenten- und Produzentenrente berechnen',s:'alt',r:'FPZ 2d'}]},
+
+   {d:3,title:'Spieltheorie',chap:'Kapitel 11',
+    why:'Braucht nichts von vorher. Gemischte Strategien sind der klassische Stolperstein – hier langsam machen.',
+    tasks:[
+     {t:'Nash-Gleichgewicht in gemischten Strategien',s:'ki',r:'Pool B1'},
+     {t:'Kampf der Geschlechter: rein und gemischt',s:'ki',r:'Pool B2'},
+     {t:'Dominante Strategien erkennen',s:'ki',r:'Pool B3'},
+     {t:'Sequentielles Spiel per Rückwärtsinduktion',s:'ki',r:'Pool B4'},
+     {t:'Gemischte Strategien im Kampf der Geschlechter',s:'uni',r:'Übung 11.1'},
+     {t:'Gleichgewichte in schwach dominanten Strategien',s:'uni',r:'Übung 11.2'},
+     {t:'Alle Nash-Gleichgewichte bestimmen',s:'alt',r:'HPZ 2c'}]},
+
+   {d:4,title:'Oligopol und Kollusion',chap:'Kapitel 13 + 14',
+    why:'Der größte Punktebringer. Vier Modelle, ein Schema – jetzt fällt es leicht, weil Tag 2 und 3 sitzen.',
+    tasks:[
+     {t:'Cournot-Gleichgewicht',s:'ki',r:'Pool A1'},
+     {t:'Stackelberg-Gleichgewicht',s:'ki',r:'Pool A2'},
+     {t:'Kollusion: Menge, Preis, Gewinne',s:'ki',r:'Pool A3'},
+     {t:'Bertrand: Preis und Gewinne',s:'ki',r:'Pool A4'},
+     {t:'Cournot mit steilerer Nachfrage',s:'ki',r:'Pool A5'},
+     {t:'Stackelberg mit steilerer Nachfrage',s:'ki',r:'Pool A6'},
+     {t:'Cournot bei ungleichen Grenzkosten',s:'ki',r:'Pool A7'},
+     {t:'Cournot mit vier Firmen',s:'ki',r:'Pool A8'},
+     {t:'Bertrand mit drei Firmen',s:'ki',r:'Pool A9'},
+     {t:'Bertrand bei ungleichen Kosten',s:'ki',r:'Pool A10'},
+     {t:'Best-Response-Funktionen zeichnen',s:'uni',r:'Übung 13.1'},
+     {t:'Cournot bei quadratischen Kosten',s:'uni',r:'Übung 13.2'},
+     {t:'Stackelberg-Mengenwettbewerb',s:'uni',r:'Übung 13.3'},
+     {t:'Implizite Kollusion bei Mengenwettbewerb',s:'uni',r:'Übung 14.1'},
+     {t:'Stackelberg: Mengen, Preis, Gewinne',s:'alt',r:'HPZ 3a'},
+     {t:'Kollusion bei simultaner Mengenwahl',s:'alt',r:'HPZ 3b'},
+     {t:'Trigger-Strategie: ab welchem Diskontfaktor?',s:'alt',r:'FPZ 3b'}]},
+
+   {d:5,title:'Unsicherheit und Informationsprobleme',chap:'Kapitel 5 + 15',
+    why:'Kompakte Schemata, schnelle Punkte. Kapitel 15 baut direkt auf dem Erwartungsnutzen aus Kapitel 5 auf.',
+    tasks:[
+     {t:'Risikoprämie bei Wurzelnutzen',s:'ki',r:'Pool C1'},
+     {t:'Risikoprämie, zweite Auszahlungsverteilung',s:'ki',r:'Pool C2'},
+     {t:'Risikoprämie bei logarithmischem Nutzen',s:'ki',r:'Pool C3'},
+     {t:'Risikoprämie bei ungleichen Wahrscheinlichkeiten',s:'ki',r:'Pool C4'},
+     {t:'Risikoprämie bei Risikoneutralität',s:'ki',r:'Pool C5'},
+     {t:'Bonus für gewünschte Anstrengung',s:'ki',r:'Pool F1'},
+     {t:'Bonus bei anderer Erfolgswahrscheinlichkeit',s:'ki',r:'Pool F2'},
+     {t:'Bonus bei anderen Anstrengungskosten',s:'ki',r:'Pool F3'},
+     {t:'Gezinkter Würfel: Erwartungswert',s:'uni',r:'Übung 5.1'},
+     {t:'Projektauswahl unter Risiko',s:'uni',r:'Übung 5.2'},
+     {t:'Lisas Fahrradversicherung',s:'uni',r:'Übung 5.3'},
+     {t:'Max’ Wertpapieranlage',s:'uni',r:'Übung 5.4'},
+     {t:'Zahlungsbereitschaft für Risikofreiheit',s:'uni',r:'Übung 5.5'},
+     {t:'Gebrauchtwagen: der Lemons-Markt',s:'uni',r:'Übung 15.1'},
+     {t:'Optimale Manager-Anreize',s:'uni',r:'Übung 15.2'},
+     {t:'Risikoprämie eines Investors',s:'alt',r:'HPZ 2a'},
+     {t:'Bonus für den Servicemitarbeiter',s:'alt',r:'HPZ 2d'},
+     {t:'Weinmarkt: ab wann nur noch schlechte Qualität?',s:'alt',r:'FPZ 2a'},
+     {t:'Sicherheitsäquivalent berechnen',s:'alt',r:'FPZ 2e'}]},
+
+   {d:6,title:'Konsumententheorie',chap:'Kapitel 1 – 3',
+    why:'Liefert die meisten Single-Choice-Punkte. Mehr Verständnis- als Rechenfragen.',
+    tasks:[
+     {t:'Cobb-Douglas: optimales Güterbündel',s:'ki',r:'Pool E1'},
+     {t:'Cobb-Douglas mit ungleichen Exponenten',s:'ki',r:'Pool E2'},
+     {t:'Perfekte Substitute: wann nur ein Gut?',s:'ki',r:'Pool E3'},
+     {t:'Perfekte Komplemente: optimales Bündel',s:'ki',r:'Pool E4'},
+     {t:'Einkommenselastizität anwenden',s:'ki',r:'Pool E5'},
+     {t:'Noras Präferenzrelation',s:'uni',r:'Übung 1.1'},
+     {t:'Indifferenzkurven und Grenzrate der Substitution',s:'uni',r:'Übung 1.2'},
+     {t:'Eigenschaften von Indifferenzkurven',s:'uni',r:'Übung 1.3'},
+     {t:'Äquivalenz von Nutzenfunktionen',s:'uni',r:'Übung 1.4'},
+     {t:'Cobb-Douglas-Nachfrage herleiten',s:'uni',r:'Übung 2.1'},
+     {t:'Perfekte Substitute',s:'uni',r:'Übung 2.2'},
+     {t:'Perfekte Komplemente',s:'uni',r:'Übung 2.3'},
+     {t:'Budgetmenge bei Steuer, Rabatt, Rationierung',s:'uni',r:'Übung 2.4'},
+     {t:'Idas Einkommens- und Substitutionseffekt',s:'uni',r:'Übung 3.2'},
+     {t:'Giffen-Gut oder inferiores Gut?',s:'uni',r:'Übung 3.3'},
+     {t:'Elastizität bei Skalierung',s:'uni',r:'Übung 3.5'},
+     {t:'Preiselastizität berechnen',s:'uni',r:'Übung 3.6'},
+     {t:'Zigarettennachfrage',s:'uni',r:'Übung 3.7'},
+     {t:'Substitute oder Komplemente?',s:'uni',r:'Übung 3.8'}]},
+
+   {d:7,title:'Reste und Puffer',chap:'Kapitel 4, 6, 9',
+    why:'Bisher in keiner Altklausur als Rechenaufgabe. Grundverständnis reicht – und alles Falsche der Woche kommt hier nochmal dran.',
+    tasks:[
+     {t:'Isoquanten bei perfekten Komplementen',s:'uni',r:'Übung 6.1'},
+     {t:'Skalenerträge bestimmen',s:'uni',r:'Übung 6.2'},
+     {t:'Marktangebotskurve aggregieren',s:'uni',r:'Übung 9.1'},
+     {t:'Marktnachfrage aggregieren',s:'uni',r:'Übung 9.2'},
+     {t:'Gleichgewicht in der Rezession',s:'uni',r:'Übung 9.3'},
+     {t:'Langfristiges Gleichgewicht bei freiem Eintritt',s:'uni',r:'Übung 9.4'},
+     {t:'Inkas intertemporaler Konsum',s:'uni',r:'Übung 4.4'},
+     {t:'Hannas Studienentscheidung',s:'uni',r:'Übung 4.5'},
+     {t:'Walters Fitnessstudio und Zeitinkonsistenz',s:'uni',r:'Übung 4.6'}]}
+  ];
+
+  // Altklausuren werden nicht einzeln abgehakt – die schreibst du komplett unter Zeit.
+  // Die Zusatzaufgaben aus dem Pool stehen als ein Punkt pro Tag.
+  PLAN.forEach(p=>{
+    const uni=p.tasks.filter(t=>t.s==='uni');
+    const extra=p.tasks.filter(t=>t.s==='ki');
+    p.tasks=uni.concat(extra.length?[{t:'Zusatzaufgaben zum Nachlegen',s:'ki',r:'Pool Tag '+p.d,n:extra.length}]:[]);
+  });
+
+  const PHASES=[
+   {from:'2026-08-11',to:'2026-08-17',t:'Einmal durch alles',d:'Jedes Thema einmal berührt. Ziel ist nicht Können, sondern zu wissen, wo es klemmt.'},
+   {from:'2026-08-18',to:'2026-08-26',t:'Lücken schließen',d:'Nur noch gelb und rot. Alte Aufgaben ein zweites Mal, ohne Lösung daneben.'},
+   {from:'2026-08-27',to:'2026-09-07',t:'Klausuren unter Zeit',d:'Zwei bis drei Simulationen pro Woche, je 60 Minuten am Stück, danach sauber nacharbeiten.'},
+   {from:'2026-09-08',to:'2026-09-13',t:'Feinschliff',d:'Nur noch die eigene Fehlerliste und eine letzte Klausur. Nichts Neues mehr anfangen.'},
+   {from:'2026-09-14',to:'2026-09-14',t:'Klausur',d:'60 Minuten, 60 Punkte. Lösungen sofort in die Tabelle übertragen.'}
+  ];
+
+  const MOCKS=[{id:'m1',n:'Altklausur HPZ SS 2025'},{id:'m2',n:'Altklausur FPZ SS 2025'},
+               {id:'m3',n:'Simulation 1 (gemischt)'},{id:'m4',n:'Simulation 2 (gemischt)'},
+               {id:'m5',n:'Generalprobe'}];
+
+  const LABEL={easy:'sitzt',shaky:'wackelig',wrong:'falsch'};
+  const SRCLABEL={uni:'Uni-Übung',alt:'Altklausur',ki:'Extra'};
+  const NEXT_DUE={easy:7,shaky:1,wrong:1};
+
+  let S={tasks:{},sessions:[],notes:'',mocks:{}};
+  let elapsed=0,ticking=null;
+
+  const today=()=>new Date().toISOString().slice(0,10);
+  const addDays=(iso,n)=>{const d=new Date(iso);d.setDate(d.getDate()+n);return d.toISOString().slice(0,10);};
+  const allTasks=()=>PLAN.flatMap(p=>p.tasks.map(t=>Object.assign({day:p.d,chap:p.chap},t)));
+
+  function load(){
+    try{const v=localStorage.getItem(KEY); if(v) S=Object.assign(S,JSON.parse(v));}catch(e){}
+    render();
+  }
+  let saveTimer=null;
+  function save(){
+    clearTimeout(saveTimer);
+    saveTimer=setTimeout(()=>{
+      try{localStorage.setItem(KEY,JSON.stringify(S));document.getElementById('savehint').textContent='Gespeichert.';}
+      catch(e){document.getElementById('savehint').textContent='Speichern hat nicht geklappt – Eingaben gelten nur für diese Sitzung.';}
+    },250);
+  }
+
+  function setStatus(r,v){
+    const cur=S.tasks[r]&&S.tasks[r].status;
+    if(cur===v) delete S.tasks[r];
+    else S.tasks[r]={status:v,date:today(),due:addDays(today(),NEXT_DUE[v])};
+    save();render();
+  }
+  function dueList(){
+    const t=today();
+    return allTasks().filter(x=>{const s=S.tasks[x.r];return s&&s.status!=='easy'&&s.due<=t;});
+  }
+  const dayDone=p=>p.tasks.every(t=>S.tasks[t.r]);
+
+  function render(){
+    const days=Math.max(0,Math.ceil((EXAM-new Date())/86400000));
+    document.getElementById('daysleft').innerHTML=days+'<small> Tage</small>';
+    document.getElementById('daysdetail').textContent=days>7?Math.floor(days/7)+' Wochen und '+(days%7)+' Tage':'Endspurt';
+
+    const all=allTasks(),total=all.length;
+    const easy=all.filter(x=>S.tasks[x.r]&&S.tasks[x.r].status==='easy').length;
+    const touched=all.filter(x=>S.tasks[x.r]).length;
+    document.getElementById('masterycount').innerHTML=easy+'<small> von '+total+'</small>';
+    document.getElementById('masterybar').style.width=(100*easy/total)+'%';
+    document.getElementById('headsub').textContent=touched===0
+      ?'Dritter Anlauf. Diesmal über Aufgaben statt über Folien.'
+      :touched+' Aufgaben gerechnet, '+easy+' davon sitzen sicher.';
+
+    const byDay={};S.sessions.forEach(s=>byDay[s.date]=(byDay[s.date]||0)+s.min);
+    let st=0,d=today();if(!byDay[d])d=addDays(d,-1);
+    while(byDay[d]){st++;d=addDays(d,-1);}
+    document.getElementById('streak').innerHTML=st+'<small> Tage</small>';
+    const tm=byDay[today()]||0;
+    document.getElementById('todaymin').textContent=tm?tm+' Minuten heute gerechnet':'Heute noch nichts gerechnet';
+
+    const due=dueList(),openDay=PLAN.find(p=>!dayDone(p));
+    const nt=document.getElementById('nowtitle'),ns=document.getElementById('nowsub');
+    if(due.length){
+      nt.textContent='Zuerst '+due.length+' Wiederholung'+(due.length>1?'en':'');
+      ns.textContent='Wiederholen schlägt Neues. Danach weiter mit Tag '+(openDay?openDay.d:'–')+'.';
+    }else if(openDay){
+      const rest=openDay.tasks.filter(t=>!S.tasks[t.r]).length;
+      nt.textContent='Tag '+openDay.d+' · '+openDay.title;
+      ns.textContent=openDay.chap+' · noch '+rest+' Aufgaben offen';
+    }else{
+      nt.textContent='Woche 1 ist durch';
+      ns.textContent='Jetzt Simulationsklausuren unter 60 Minuten.';
+    }
+
+    const q=document.getElementById('queue');q.innerHTML='';
+    document.getElementById('quecount').textContent=due.length?due.length+' offen':'';
+    if(!due.length){
+      q.innerHTML='<div class="empty">Nichts fällig. Entweder war heute alles klar – oder es ist noch nichts bewertet.</div>';
+    }else{
+      due.forEach(x=>{
+        const s=S.tasks[x.r];
+        const b=document.createElement('button');
+        b.className='chip '+s.status;
+        b.innerHTML='<span class="dot '+s.status+'"></span><span>'+x.t+' <span class="mini">· '+x.r+'</span></span>'+
+                    '<span class="st">war '+LABEL[s.status]+' → jetzt nochmal</span>';
+        b.onclick=()=>setStatus(x.r,'easy');
+        q.appendChild(b);
+      });
+    }
+
+    const dc=document.getElementById('days');dc.innerHTML='';
+    PLAN.forEach(p=>{
+      const done=p.tasks.filter(t=>S.tasks[t.r]).length,full=done===p.tasks.length;
+      const det=document.createElement('details');det.className='day';
+      if(p===openDay)det.open=true;
+      det.innerHTML='<summary><span class="daynum'+(full?' done':'')+'">'+(full?'✓':p.d)+'</span>'+
+        '<span style="flex:1"><h3>'+p.title+'</h3><span class="mini">'+p.chap+' · '+done+' von '+p.tasks.length+' bewertet</span></span></summary>'+
+        '<div class="daybody"><div class="mini" style="margin:0 0 6px">'+p.why+'</div><div class="tasks"></div></div>';
+      const box=det.querySelector('.tasks');
+      ['uni','ki'].forEach(src=>{
+        const list=p.tasks.filter(t=>t.s===src);
+        if(!list.length)return;
+        const h=document.createElement('div');h.className='grouphead';
+        h.textContent=src==='uni'?'Übungsaufgaben aus der Vorlesung':'Nur wenn es noch wackelt';
+        box.appendChild(h);
+        list.forEach(t=>{
+          const s=S.tasks[t.r];
+          const row=document.createElement('div');row.className='task';
+          row.innerHTML='<span class="dot '+(s?s.status:'')+'"></span>'+
+            '<span class="name">'+t.t+'<br><span class="ref">'+t.r+(t.n?' · '+t.n+' Aufgaben':'')+'</span></span>'+
+            '<span class="badge '+t.s+'">'+SRCLABEL[t.s]+'</span>'+
+            '<span class="seg">'+['easy','shaky','wrong'].map(v=>
+              '<button data-v="'+v+'" data-on="'+(s&&s.status===v?1:0)+'">'+LABEL[v]+'</button>').join('')+'</span>';
+          row.querySelectorAll('.seg button').forEach(b=>b.onclick=()=>setStatus(t.r,b.dataset.v));
+          box.appendChild(row);
+        });
+      });
+      dc.appendChild(det);
+    });
+
+    const t0=today();
+    document.getElementById('phases').innerHTML=PHASES.map(p=>{
+      const now=t0>=p.from&&t0<=p.to;
+      const f=p.from.slice(8)+'.'+p.from.slice(5,7)+'.',to=p.to.slice(8)+'.'+p.to.slice(5,7)+'.';
+      return '<div class="phase'+(now?' now':'')+'"><div class="when">'+(p.from===p.to?f:f+' – '+to)+'</div>'+
+             '<div class="what"><b>'+p.t+'</b><div class="mini">'+p.d+'</div></div></div>';
+    }).join('');
+
+    const mc=document.getElementById('mocks');mc.innerHTML='';
+    MOCKS.forEach(m=>{
+      const v=S.mocks[m.id]||{};
+      const row=document.createElement('div');row.className='task';
+      row.innerHTML='<span class="dot '+(v.pts>=30?'easy':(v.pts!=null&&v.pts!==''?'wrong':''))+'"></span>'+
+        '<span class="name">'+m.n+'</span>'+
+        '<input type="text" style="width:96px" placeholder="Datum" value="'+(v.date||'')+'">'+
+        '<input type="number" style="width:98px" placeholder="/ 60 P." value="'+(v.pts??'')+'">';
+      const [di,pi]=row.querySelectorAll('input');
+      const upd=()=>{S.mocks[m.id]={date:di.value,pts:pi.value===''?null:Number(pi.value)};save();};
+      di.onchange=upd;pi.onchange=()=>{upd();render();};
+      mc.appendChild(row);
+    });
+
+    document.getElementById('notes').value=S.notes||'';
+  }
+
+  const fmt=s=>String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');
+  document.getElementById('startstop').onclick=function(){
+    if(ticking){clearInterval(ticking);ticking=null;this.textContent='Weiter';}
+    else{ticking=setInterval(()=>{elapsed++;document.getElementById('clock').textContent=fmt(elapsed);},1000);this.textContent='Pause';}
+  };
+  document.getElementById('logbtn').onclick=()=>{
+    const min=Math.max(1,Math.round(elapsed/60));
+    S.sessions.push({date:today(),min:min});
+    elapsed=0;clearInterval(ticking);ticking=null;
+    document.getElementById('clock').textContent='00:00';
+    document.getElementById('startstop').textContent='Start';
+    document.getElementById('sessionhint').textContent=min+' Minuten gebucht.';
+    save();render();
+  };
+  document.getElementById('onetask').onclick=()=>{
+    const due=dueList();
+    const x=due[0]||allTasks().find(t=>!S.tasks[t.r]);
+    if(!x)return;
+    document.getElementById('hint').textContent='Nur diese eine: „'+x.t+'“ ('+x.r+'). Mehr musst du heute nicht.';
+    if(!ticking)document.getElementById('startstop').click();
+  };
+  document.getElementById('mixbtn').onclick=()=>{
+    const pool=allTasks().filter(x=>{const s=S.tasks[x.r];return !s||s.status!=='easy';});
+    const copy=pool.slice(),pick=[];
+    while(pick.length<5&&copy.length)pick.push(copy.splice(Math.floor(Math.random()*copy.length),1)[0]);
+    document.getElementById('hint').textContent=pick.length
+      ?'Mischsatz quer durch die Themen: '+pick.map(p=>p.t+' ('+p.r+')').join(' · ')
+      :'Alles sitzt. Dann eine ganze Klausur unter 60 Minuten.';
+  };
+  const notes=document.getElementById('notes');
+  notes.oninput=()=>{S.notes=notes.value;save();document.getElementById('notesaved').textContent='Notiz gespeichert.';};
+
+  load();
+})();
+</script>
