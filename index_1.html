@@ -1,3 +1,11 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Mikro-Lernplan</title>
+</head>
+<body style="margin:0;background:#fff">
 <div id="root">
 <style>
   :root{
@@ -504,6 +512,12 @@
   const notes=document.getElementById('notes');
   notes.oninput=()=>{S.notes=notes.value;save();document.getElementById('notesaved').textContent='Notiz gespeichert.';};
 
-  load();
+  try{ load(); }catch(e){
+    document.getElementById('savehint').textContent='Fehler beim Laden: '+e.message;
+    console.error(e);
+  }
 })();
 </script>
+
+</body>
+</html>
